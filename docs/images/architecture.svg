@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#6f8179"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="800" fill="#f5f8f6"/>
+
+  <!-- 前端 -->
+  <rect x="60" y="40" width="1080" height="118" rx="14" fill="#e9f4f1" stroke="#b9dcd5" stroke-width="1.5"/>
+  <text x="84" y="70" font-size="13" font-weight="600" fill="#0b5d57">前端 · Vue 3 + Element Plus + Pinia + ECharts</text>
+  <rect x="84" y="84" width="330" height="56" rx="10" fill="#ffffff" stroke="#cfe3de"/>
+  <text x="249" y="118" font-size="13" fill="#1c2b26" text-anchor="middle">登录 / 全局布局</text>
+  <rect x="436" y="84" width="330" height="56" rx="10" fill="#ffffff" stroke="#cfe3de"/>
+  <text x="601" y="118" font-size="13" fill="#1c2b26" text-anchor="middle">业务页面：采购 · 销售 · 库存 · 财务 · CRM</text>
+  <rect x="788" y="84" width="312" height="56" rx="10" fill="#ffffff" stroke="#cfe3de"/>
+  <text x="944" y="118" font-size="13" fill="#1c2b26" text-anchor="middle">审批中心 · 经营仪表盘 · 报表</text>
+
+  <line x1="600" y1="158" x2="600" y2="188" stroke="#6f8179" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="612" y="180" font-size="12" fill="#5d6f68">REST /api · JWT</text>
+
+  <!-- 安全层 -->
+  <rect x="60" y="196" width="1080" height="64" rx="12" fill="#eef4f8" stroke="#c2d6e2" stroke-width="1.5"/>
+  <text x="600" y="234" font-size="14" font-weight="600" fill="#314a5c" text-anchor="middle">erp-security · Spring Security 6 + JWT · 接口级权限码校验</text>
+
+  <line x1="600" y1="260" x2="600" y2="288" stroke="#6f8179" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 业务模块 -->
+  <rect x="60" y="296" width="1080" height="196" rx="14" fill="#ffffff" stroke="#dfe9e4" stroke-width="1.5"/>
+  <text x="84" y="324" font-size="13" font-weight="600" fill="#4a5e56">业务模块</text>
+
+  <rect x="84" y="336" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="206" y="365" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-system</text>
+  <text x="206" y="385" font-size="11" fill="#687872" text-anchor="middle">用户 · 角色 · 菜单 · 日志</text>
+
+  <rect x="340" y="336" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="462" y="365" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-masterdata</text>
+  <text x="462" y="385" font-size="11" fill="#687872" text-anchor="middle">商品 · 客户 · 供应商</text>
+
+  <rect x="596" y="336" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="718" y="365" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-inventory</text>
+  <text x="718" y="385" font-size="11" fill="#687872" text-anchor="middle">余额 · 流水 · 调拨 · 盘点</text>
+
+  <rect x="852" y="336" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="974" y="365" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-purchase</text>
+  <text x="974" y="385" font-size="11" fill="#687872" text-anchor="middle">订单 · 收货入库</text>
+
+  <rect x="84" y="412" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="206" y="441" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-sales</text>
+  <text x="206" y="461" font-size="11" fill="#687872" text-anchor="middle">订单 · 发货出库</text>
+
+  <rect x="340" y="412" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="462" y="441" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-finance</text>
+  <text x="462" y="461" font-size="11" fill="#687872" text-anchor="middle">应收 · 应付 · 核销</text>
+
+  <rect x="596" y="412" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="718" y="441" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-crm</text>
+  <text x="718" y="461" font-size="11" fill="#687872" text-anchor="middle">线索 · 商机 · 跟进</text>
+
+  <rect x="852" y="412" width="244" height="64" rx="9" fill="#f7faf9" stroke="#dbe7e2"/>
+  <text x="974" y="441" font-size="13" font-weight="600" fill="#1c2b26" text-anchor="middle">erp-report</text>
+  <text x="974" y="461" font-size="11" fill="#687872" text-anchor="middle">仪表盘 · 报表 · 导出</text>
+
+  <!-- 事件与基础 -->
+  <line x1="390" y1="492" x2="390" y2="524" stroke="#0b5d57" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="402" y="514" font-size="12" fill="#0b5d57">ApprovalResultEvent · 同事务回写</text>
+
+  <line x1="880" y1="492" x2="880" y2="524" stroke="#6f8179" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="892" y="514" font-size="12" fill="#5d6f68">统一依赖</text>
+
+  <rect x="84" y="530" width="520" height="112" rx="12" fill="#0f766e" stroke="#0b5d57" stroke-width="1.5"/>
+  <text x="104" y="566" font-size="16" font-weight="600" fill="#ffffff">erp-workflow</text>
+  <text x="104" y="590" font-size="12" fill="#cfeee8">流程定义 · 审批实例 · 待办任务</text>
+  <text x="104" y="612" font-size="12" fill="#cfeee8">会签 / 或签 · 转交 · 超时提醒 · 事件发布</text>
+
+  <rect x="676" y="530" width="420" height="112" rx="12" fill="#fbf2e4" stroke="#e2c9a1" stroke-width="1.5"/>
+  <text x="696" y="566" font-size="16" font-weight="600" fill="#7a531f">erp-common</text>
+  <text x="696" y="590" font-size="12" fill="#8a6b3d">统一响应 · 全局异常 · 审计</text>
+  <text x="696" y="612" font-size="12" fill="#8a6b3d">金额工具 · 幂等 · MyBatis-Plus 配置</text>
+
+  <line x1="390" y1="642" x2="390" y2="670" stroke="#6f8179" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="880" y1="642" x2="880" y2="670" stroke="#6f8179" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="300" y="674" width="600" height="88" rx="14" fill="#12262b"/>
+  <text x="600" y="712" font-size="16" font-weight="600" fill="#ffffff" text-anchor="middle">MySQL 8</text>
+  <text x="600" y="736" font-size="12" fill="#a9c6bd" text-anchor="middle">42 张表 · Flyway V1 → V4 自动迁移与初始化数据</text>
+</svg>
