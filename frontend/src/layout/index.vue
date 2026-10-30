@@ -1,23 +1,30 @@
 <template>
   <el-container class="layout">
-    <el-aside :width="collapsed ? '64px' : '220px'" class="aside">
-      <div class="logo">
-        <span v-if="!collapsed">ERP 管理平台</span>
-        <span v-else>ERP</span>
+    <el-aside :width="collapsed ? '72px' : '232px'" class="aside">
+      <div class="logo" :class="{ 'logo-collapsed': collapsed }">
+        <div class="logo-mark">E</div>
+        <div v-if="!collapsed" class="logo-copy">
+          <strong>ERP Suite</strong>
+          <span>企业运营平台</span>
+        </div>
       </div>
-      <el-scrollbar>
+      <el-scrollbar class="aside-scroll">
         <el-menu
           :default-active="activeMenu"
           :collapse="collapsed"
           :collapse-transition="false"
-          background-color="#1f2937"
-          text-color="#cbd5e1"
+          background-color="transparent"
+          text-color="#aec3bc"
           active-text-color="#ffffff"
           router
         >
           <sidebar-item v-for="item in visibleMenus" :key="item.id" :item="item" />
         </el-menu>
       </el-scrollbar>
+      <div v-if="!collapsed" class="aside-foot">
+        <span class="status-dot"></span>
+        <span>服务运行中</span>
+      </div>
     </el-aside>
     <el-container>
       <el-header class="header">
@@ -26,17 +33,22 @@
             <Fold v-if="!collapsed" />
             <Expand v-else />
           </el-icon>
+          <span class="header-divider"></span>
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item v-if="currentTitle">{{ currentTitle }}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
         <div class="header-right">
+          <span class="header-date">{{ todayLabel }}</span>
           <el-dropdown trigger="click" @command="handleCommand">
             <span class="user-info">
-              <el-icon><UserFilled /></el-icon>
-              <span>{{ user.realName || user.username || '未登录' }}</span>
-              <el-icon><ArrowDown /></el-icon>
+              <span class="user-avatar">{{ userInitial }}</span>
+              <span class="user-meta">
+                <span class="user-name">{{ user.realName || user.username || '未登录' }}</span>
+                <span class="user-role">{{ roleLabel }}</span>
+              </span>
+              <el-icon class="user-arrow"><ArrowDown /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -95,6 +107,25 @@ const visibleMenus = computed(() =>
 )
 const activeMenu = computed(() => route.path)
 const currentTitle = computed(() => route.meta.title || '')
+const userInitial = computed(() => {
+  const name = user.value.realName || user.value.username || 'E'
+  return name.slice(0, 1).toUpperCase()
+})
+const roleNames = {
+  ADMIN: '系统管理员',
+  SALES_MANAGER: '销售经理',
+  SALES: '销售专员',
+  PURCHASE_MANAGER: '采购经理',
+  PURCHASE: '采购专员',
+  WAREHOUSE: '仓库管理员',
+  FINANCE: '财务专员'
+}
+const roleLabel = computed(() => roleNames[(user.value.roles || [])[0]] || '业务用户')
+const todayLabel = new Intl.DateTimeFormat('zh-CN', {
+  month: 'long',
+  day: 'numeric',
+  weekday: 'long'
+}).format(new Date())
 
 const passwordVisible = ref(false)
 const passwordFormRef = ref()
@@ -132,36 +163,148 @@ async function submitPassword() {
 <style scoped>
 .layout {
   height: 100vh;
+  background: var(--erp-canvas);
 }
 
 .aside {
-  background: #1f2937;
-  transition: width 0.2s;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  background: radial-gradient(circle at 12% 0%, #18383f 0%, #0d2028 46%, #08151a 100%);
+  box-shadow: 16px 0 42px rgba(8, 27, 33, 0.13);
+  transition: width 0.24s ease;
 }
 
 .logo {
-  height: 56px;
   display: flex;
+  flex: 0 0 64px;
   align-items: center;
+  gap: 11px;
+  padding: 0 18px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo-collapsed {
   justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 1px;
-  border-bottom: 1px solid #374151;
+  padding: 0;
+}
+
+.logo-mark {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2ca596 0%, #0d655d 100%);
+  box-shadow: 0 8px 18px rgba(11, 93, 87, 0.35);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.logo-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+.logo-copy strong {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.logo-copy span {
+  margin-top: 5px;
+  color: #8eaaa2;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+}
+
+.aside-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.aside-scroll :deep(.el-scrollbar__view) {
+  padding: 10px 0 12px;
 }
 
 .aside :deep(.el-menu) {
-  border-right: none;
+  border-right: 0;
+  background: transparent;
+}
+
+.aside :deep(.el-menu-item),
+.aside :deep(.el-sub-menu__title) {
+  height: 44px;
+  margin: 3px 10px;
+  border-radius: 9px;
+  color: #aec3bc;
+  font-size: 13px;
+  line-height: 44px;
+}
+
+.aside :deep(.el-menu-item:hover),
+.aside :deep(.el-sub-menu__title:hover) {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.aside :deep(.el-menu-item.is-active) {
+  background: linear-gradient(90deg, rgba(63, 181, 161, 0.2), rgba(63, 181, 161, 0.06));
+  box-shadow: inset 3px 0 0 #5fc5b0;
+  color: #ffffff;
+  font-weight: 550;
+}
+
+.aside :deep(.el-sub-menu .el-menu-item) {
+  min-width: auto;
+  padding-left: 48px !important;
+}
+
+.aside :deep(.el-menu--collapse .el-menu-item),
+.aside :deep(.el-menu--collapse .el-sub-menu__title) {
+  margin: 3px 8px;
+}
+
+.aside-foot {
+  display: flex;
+  flex: 0 0 50px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8eaaa2;
+  font-size: 12px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #58c6ad;
+  box-shadow: 0 0 0 3px rgba(88, 198, 173, 0.12);
 }
 
 .header {
-  height: 56px;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  z-index: 9;
   display: flex;
+  height: 64px;
   align-items: center;
   justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(24, 58, 48, 0.08);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 1px 0 rgba(24, 58, 48, 0.02);
+  backdrop-filter: blur(14px);
 }
 
 .header-left {
@@ -172,20 +315,102 @@ async function submitPassword() {
 
 .collapse-btn {
   cursor: pointer;
+  color: #4d625b;
   font-size: 18px;
+  transition: color 0.16s ease;
+}
+
+.collapse-btn:hover {
+  color: var(--erp-jade);
+}
+
+.header-divider {
+  width: 1px;
+  height: 18px;
+  background: #dce6e2;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-date {
+  color: #80918b;
+  font-size: 12px;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
+  padding: 5px 9px 5px 5px;
+  border-radius: 12px;
   cursor: pointer;
-  color: #303133;
+  transition: background 0.16s ease;
+}
+
+.user-info:hover {
+  background: #f1f7f4;
+}
+
+.user-avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1a9186, #0a5d57);
+  box-shadow: 0 6px 14px rgba(15, 118, 110, 0.2);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.15;
+}
+
+.user-name {
+  color: #263832;
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.user-role {
+  color: #879790;
+  font-size: 11px;
+}
+
+.user-arrow {
+  color: #92a29c;
+  font-size: 12px;
 }
 
 .main {
   padding: 0;
-  background: #f2f4f7;
   overflow: auto;
+  background:
+    radial-gradient(circle at 96% 2%, rgba(15, 118, 110, 0.06), transparent 30%),
+    transparent;
+}
+
+@media (max-width: 760px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .header-date,
+  .header-divider {
+    display: none;
+  }
+
+  .user-meta {
+    display: none;
+  }
 }
 </style>

@@ -6,6 +6,82 @@
 - 前端：Vue 3 + JavaScript（无 TypeScript）+ Vite 6 + Element Plus + Pinia + Vue Router + Axios + ECharts 5
 - 数据库：42 张表，Flyway 自动迁移 + 初始化数据
 
+## 界面预览
+
+登录页左右分栏：左侧说明平台能力，右侧为登录表单。
+
+![登录页](docs/images/login.png)
+
+经营仪表盘：顶部经营概览带 + 8 张核心指标卡 + 销售趋势与采购结构图表。
+
+![经营仪表盘](docs/images/dashboard.png)
+
+审批流程定义：查询区、流程表格与分页，侧边栏按角色高亮当前菜单。
+
+![审批流程定义](docs/images/workflow.png)
+
+## 架构
+
+```mermaid
+flowchart TB
+    subgraph FE["前端 · Vue 3 + Element Plus"]
+        direction LR
+        F1["登录 / 全局布局"]
+        F2["采购 · 销售 · 库存 · 财务 · CRM"]
+        F3["审批中心 · 仪表盘 · 报表"]
+    end
+
+    subgraph BE["后端 · Spring Boot 3.3.5"]
+        SEC["erp-security<br/>Spring Security 6 + JWT"]
+        subgraph BIZ["业务模块"]
+            SYS["erp-system"]
+            MD["erp-masterdata"]
+            INV["erp-inventory"]
+            PUR["erp-purchase"]
+            SAL["erp-sales"]
+            FIN["erp-finance"]
+            CRM["erp-crm"]
+            RPT["erp-report"]
+        end
+        WF["erp-workflow<br/>流程定义 / 实例 / 待办 / 事件"]
+        COMMON["erp-common<br/>统一响应 · 异常 · 审计 · 金额 · 幂等"]
+        APP["erp-app<br/>配置 · Flyway · 启动"]
+    end
+
+    DB[("MySQL 8<br/>42 张表 · Flyway V1→V4")]
+
+    FE -->|"REST /api · JWT"| SEC
+    SEC --> BIZ
+    SEC --> WF
+    BIZ --> COMMON
+    WF --> COMMON
+    COMMON --> DB
+    BIZ -->|"ApprovalResultEvent"| WF
+    WF -->|"同事务回写业务单据"| BIZ
+```
+
+审批采用「业务单据 → 流程实例 → 待办任务」的联动模型：业务模块发起流程时写入实例与待办，审批结束发布 `ApprovalResultEvent`，监听器在同一事务内回写单据状态，避免出现单据与审批状态不一致。
+
+```mermaid
+sequenceDiagram
+    participant U as 业务用户
+    participant B as 业务模块
+    participant W as WorkflowService
+    participant DB as MySQL
+    participant L as 审批结果监听器
+
+    U->>B: 提交单据
+    B->>DB: 保存业务单（待审批）
+    B->>W: startProcess(bizType, bizId, amount, deptId)
+    W->>DB: 匹配流程定义 → 生成 wf_instance / wf_task
+    W-->>B: 返回审批中
+    Note over U,L: 审批人处理待办：同意 / 驳回 / 转交，支持会签与或签
+    U->>W: approve / reject
+    W->>DB: 写 wf_history，推进节点或结束实例
+    W->>L: publish ApprovalResultEvent（同事务）
+    L->>DB: 回写单据状态（已审批 / 已驳回）
+```
+
 ## 目录结构
 
 ```
@@ -39,8 +115,10 @@ java -jar erp-app/target/erp-app-1.0.0.jar
 # 前端
 cd frontend
 npm install
-npm run dev          # http://localhost:5173 ，/api 代理到 8080
+npm run dev          # 默认 http://localhost:5173 ，/api 代理到 8080
 ```
+
+若 5173 已被其他项目占用，Vite 会自动顺延到 5174，请以终端输出地址为准。
 
 默认账号：`admin / Admin@123`。其他演示账号（密码相同）：`sales01`、`salesmgr`、`purchase01`、`purchasemgr`、`wh01`、`fin01`。
 
@@ -56,7 +134,7 @@ docker compose up -d --build
 ## 测试
 
 ```bash
-# 后端：单元 + 集成 + 权限 + 并发 + 金额 + 幂等（20 个用例）
+# 后端：单元 + 集成 + 权限 + 并发 + 金额 + 幂等 + 审批增强（25 个用例）
 cd backend && mvn test
 
 # 前端：静态检查、生产构建、端到端
@@ -68,10 +146,11 @@ E2E 使用 Playwright + 本机 Microsoft Edge，无需额外下载浏览器；�
 ## 关键实现
 
 - 认证：JWT（HS384）+ Spring Security 6，接口级 `@PreAuthorize` 权限码校验，菜单与按钮权限由角色动态下发。
-- 审批：`wf_process → wf_node（角色/用户 + 金额区间）→ wf_instance → wf_task/wf_history`，审批结果通过 Spring 事件在同事务内回写业务单据。
+- 审批：`wf_process → wf_node（角色/用户 + 金额区间）→ wf_instance → wf_task/wf_history`，支持会签（AND）/ 或签（OR）、审批转交、限时审批（超时自动标记 `overdue`）与按发起部门限定审批节点；审批结果通过 Spring 事件在同事务内回写业务单据。
 - 库存：`SELECT ... FOR UPDATE` 行锁 + 条件更新状态机，入库按加权平均成本核算，禁止负库存。
 - 金额：全链路 `BigDecimal`，数量/单价精度 4 位、展示金额 2 位，统一 `HALF_UP`。
 - 幂等：`sys_idempotency` 唯一键控制重复提交。
+- 前端：统一设计 token（青玉 + 琥珀配色）覆盖 Element Plus 主题，`v-permission` 控制按钮级权限，ECharts 承载经营图表。
 
 ## 文档
 
