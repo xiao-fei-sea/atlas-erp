@@ -52,7 +52,7 @@
           </el-form-item>
           <el-button type="primary" class="login-btn" :loading="loading" @click="submit">登 录</el-button>
         </el-form>
-        <p class="hint">默认管理员：admin / Admin@123</p>
+        <p class="hint">请使用管理员分配的账号登录</p>
       </main>
     </div>
   </div>
@@ -71,7 +71,7 @@ const store = useUserStore()
 
 const formRef = ref()
 const loading = ref(false)
-const form = reactive({ username: 'admin', password: 'Admin@123' })
+const form = reactive({ username: '', password: '' })
 const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]

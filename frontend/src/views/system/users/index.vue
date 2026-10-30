@@ -97,7 +97,7 @@
             v-model="form.password"
             type="password"
             show-password
-            placeholder="留空则使用默认密码 Erp@123456"
+            placeholder="留空则使用系统默认密码"
           />
         </el-form-item>
         <el-form-item label="姓名" prop="realName">
