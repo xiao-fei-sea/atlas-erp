@@ -1,6 +1,10 @@
-# Atlas ERP 企业管理系统
+<div align="center">
 
-一套可直接运行的模块化单体 ERP，把商品、库存、采购、销售、资金与审批放进同一套经营视图。
+# Atlas ERP
+
+**企业运营管理系统 · Enterprise Resource Planning**
+
+商品、库存、采购、销售、资金与审批，收在同一张经营视图里。
 
 ![Java](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-6DB33F?logo=springboot&logoColor=white)
@@ -9,20 +13,17 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)
 ![Flyway](https://img.shields.io/badge/Flyway-V1%20→%20V4-CC0200?logo=flyway&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-25%20passed-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-## 目录
+</div>
 
-- [功能特性](#功能特性)
-- [界面预览](#界面预览)
-- [系统架构](#系统架构)
-- [技术栈](#技术栈)
-- [快速开始](#快速开始)
-- [配置项](#配置项)
-- [Docker 部署](#docker-部署)
-- [测试与质量门禁](#测试与质量门禁)
-- [项目结构](#项目结构)
-- [接口约定](#接口约定)
-- [文档](#文档)
+## 项目简介
+
+> Atlas ERP is a modular-monolith ERP built with Spring Boot 3 and Vue 3. It covers master data, inventory,
+> purchasing, sales, finance, an approval workflow engine, CRM and reporting, and ships with Flyway
+> migrations, role-based access control and end-to-end tests. Everything runs locally with one MySQL instance.
+
+Atlas ERP 是一套可直接运行的模块化单体 ERP：业务模块共享同一套统一响应、异常、审计、金额与幂等能力，审批流作为横切能力串联采购、销售等单据，审批结果在同事务内回写业务状态。前端使用统一设计 token 覆盖 Element Plus 主题，配合按钮级权限与图表看板。
 
 ## 功能特性
 
@@ -31,7 +32,7 @@
 | 系统管理 | 用户、角色、菜单、部门、字典、参数、操作日志、序列号、幂等控制 |
 | 基础资料 | 商品与分类、计量单位、客户、供应商、仓库 |
 | 库存 | 库存余额查询、出入库流水、调拨、盘点、补货建议，加权平均成本核算 |
-| 采购 | 采购订单、收货入库，支持审批后自动生成入库单 |
+| 采购 | 采购订单、收货入库，审批通过后自动生成入库单 |
 | 销售 | 销售订单、发货出库，审批通过后扣减库存并生成应收 |
 | 财务 | 应收 / 应付、收款 / 付款、核销、资金账户 |
 | 审批流 | 流程定义（角色 / 用户 + 金额区间 + 部门限定）、审批实例、我的待办、审批历史；支持会签 / 或签、转交、超时提醒 |
@@ -97,7 +98,9 @@ sequenceDiagram
 
 ## 快速开始
 
-环境要求 JDK 21、Maven 3.9+、Node 20+、MySQL 8。
+### 环境要求
+
+JDK 21、Maven 3.9+、Node 20+、MySQL 8。
 
 ```bash
 # 1. 后端（默认连接 127.0.0.1:3307/erp）
@@ -113,7 +116,7 @@ npm run dev                                   # 默认 http://localhost:5173，/
 
 若 5173 已被其他项目占用，Vite 会自动顺延到 5174，请以终端输出地址为准。首次启动由 Flyway 自动建表并写入初始化数据。
 
-默认账号：
+### 默认账号
 
 | 账号 | 密码 | 角色 |
 | --- | --- | --- |
@@ -207,3 +210,11 @@ docs/                   需求、架构、数据库、API、页面、计划与�
 | [实施计划](docs/06-plan.md) | 阶段拆分与任务 |
 | [部署说明](docs/07-deployment.md) | 本地、Docker、生产部署 |
 | [项目状态](docs/PROJECT_STATUS.md) | 当前进度与验证结果 |
+
+## 贡献
+
+欢迎提交 Issue 与 Pull Request。开始前请阅读 [贡献指南](CONTRIBUTING.md)，其中包含本地开发、分支与提交信息规范、代码风格与自测要求。
+
+## 许可证
+
+本项目基于 [MIT License](LICENSE) 开源。
