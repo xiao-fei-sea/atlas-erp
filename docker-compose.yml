@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: erp-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Root@123456
+      MYSQL_DATABASE: erp
+      MYSQL_USER: erp
+      MYSQL_PASSWORD: Erp@123456
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - erp-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-perp@123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  backend:
+    build: ./backend
+    container_name: erp-backend
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/erp?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+      DB_USER: erp
+      DB_PASSWORD: Erp@123456
+      JWT_SECRET: change-me-in-production-erp-jwt-secret-2026
+      TZ: Asia/Shanghai
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: erp-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  erp-mysql-data:
