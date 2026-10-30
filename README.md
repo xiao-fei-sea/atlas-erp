@@ -44,23 +44,23 @@ Atlas ERP 是一套可直接运行的模块化单体 ERP：业务模块共享同
 
 经营仪表盘：顶部经营概览带 + 8 张核心指标卡 + 销售趋势与采购结构图表。
 
-![经营仪表盘](docs/images/dashboard.png)
+![经营仪表盘](assets/images/dashboard.png)
 
 | 登录页 | 销售订单 |
 | --- | --- |
-| ![登录页](docs/images/login.png) | ![销售订单](docs/images/sales-orders.png) |
+| ![登录页](assets/images/login.png) | ![销售订单](assets/images/sales-orders.png) |
 
 | 库存查询 | 审批实例 |
 | --- | --- |
-| ![库存查询](docs/images/inventory-stocks.png) | ![审批实例](docs/images/workflow-instances.png) |
+| ![库存查询](assets/images/inventory-stocks.png) | ![审批实例](assets/images/workflow-instances.png) |
 
 流程定义维护：查询区、流程表格与分页，侧边栏按角色高亮当前菜单。
 
-![审批流程定义](docs/images/workflow.png)
+![审批流程定义](assets/images/workflow.png)
 
 ## 系统架构
 
-![系统架构](docs/images/architecture.svg)
+![系统架构](assets/images/architecture.svg)
 
 前端通过 JWT 访问 `/api`，Spring Security 统一鉴权后分发到各业务模块；业务模块依赖 `erp-common` 的响应、异常、审计、金额与幂等能力，最终由 MyBatis-Plus 落到 MySQL。
 
@@ -143,7 +143,7 @@ docker compose up -d --build
 # 前端 http://localhost ，后端 http://localhost:8080 ，MySQL localhost:3306
 ```
 
-首次启动由 Flyway 自动建表并写入初始化数据，详见 [部署说明](docs/07-deployment.md)。
+首次启动由 Flyway 自动建表并写入初始化数据。
 
 ## 测试与质量门禁
 
@@ -179,8 +179,7 @@ frontend/               Vue 3 前端工程
   src/views             各业务页面
   src/styles            全局设计 token 与 Element Plus 主题
   e2e                   Playwright 端到端用例
-docs/                   需求、架构、数据库、API、页面、计划与项目状态
-  images                界面截图与架构图
+assets/images/          README 使用的界面截图与架构图
 ```
 
 ## 接口约定
@@ -200,16 +199,7 @@ docs/                   需求、架构、数据库、API、页面、计划与�
 
 ## 文档
 
-| 文档 | 内容 |
-| --- | --- |
-| [需求说明](docs/01-requirements.md) | 业务范围、角色与用例 |
-| [架构设计](docs/02-architecture.md) | 分层设计、模块职责、关键流程 |
-| [数据库设计](docs/03-database.md) | 42 张表结构与关系 |
-| [API 清单](docs/04-api.md) | 接口路径、参数与权限码 |
-| [页面清单](docs/05-pages.md) | 页面与菜单结构 |
-| [实施计划](docs/06-plan.md) | 阶段拆分与任务 |
-| [部署说明](docs/07-deployment.md) | 本地、Docker、生产部署 |
-| [项目状态](docs/PROJECT_STATUS.md) | 当前进度与验证结果 |
+设计文档（需求、架构、数据库、API、页面、实施计划、部署说明与项目状态）保存在本地 `docs/` 目录，不随公开仓库分发；运行方式、配置与验证命令以本 README 为准。
 
 ## 贡献
 

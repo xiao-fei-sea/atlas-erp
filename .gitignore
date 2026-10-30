@@ -47,6 +47,9 @@ application-local.yml
 application-local.yaml
 application-local.properties
 
+# ---------- 本地设计文档（不随仓库分发） ----------
+docs/
+
 # ---------- 数据库 ----------
 *.db
 *.sqlite
