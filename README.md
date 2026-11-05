@@ -93,7 +93,7 @@ Atlas ERP 是一套可直接运行的模块化单体 ERP：业务模块共享同
 
 ![审批流程定义](assets/images/workflow.png)
 
-以上截图均基于内置演示数据，由 Playwright 在实际运行的应用中采集。
+以上截图均基于内置演示数据。
 
 ## 系统架构
 
