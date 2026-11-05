@@ -25,6 +25,29 @@
 
 Atlas ERP 是一套可直接运行的模块化单体 ERP：业务模块共享同一套统一响应、异常、审计、金额与幂等能力，审批流作为横切能力串联采购、销售等单据，审批结果在同事务内回写业务状态。前端使用统一设计 token 覆盖 Element Plus 主题，配合按钮级权限与图表看板。
 
+## 关于项目 · About
+
+**定位**：面向中小型贸易 / 分销企业的进销存与资金管理示例工程，用一套模块划分把商品、库存、采购、销售、财务、审批与报表串成闭环，重点展示事务一致性、权限、审计与可测试性等工程实践。
+
+**适用场景**
+
+- 需要快速启动、便于二次开发的 ERP 脚手架：按业务域拆分 Maven 模块，依赖方向清晰
+- 中小企业日常的进销存、应收应付与多级审批运营
+- 学习 Spring Boot 3 + Vue 3 全栈工程化、审批流联动设计的参考实现
+
+**边界与非目标**
+
+- 单租户、单实例部署，不包含 SaaS 多租户隔离与计费
+- 不覆盖制造业 MRP、工序级生产与成本核算，也不提供电商前台与多法人合并报表
+- 审批为内置轻量引擎（角色 / 用户 + 金额区间 + 部门），不对标可视化 BPM 平台
+- 报表面向经营视角，不替代专业 BI 与数据仓库
+
+**开发背景**：项目源于对企业核心业务链的一体化梳理——以统一的响应、异常、审计、金额与幂等约定让各模块行为一致；用事务内事件回写解决单据与审批状态不一致的问题。代码刻意保持克制，优先可读性与可验证性，配套单元、集成、权限、并发与端到端测试。
+
+> Atlas ERP targets small and mid-sized trading and distribution businesses. It is a single-tenant, single-instance
+> modular monolith covering the procure-to-pay and quote-to-cash loop, not a manufacturing MRP, a multi-tenant SaaS
+> platform or a full BPM suite. Readability and verifiability take priority over feature breadth.
+
 ## 功能特性
 
 | 领域 | 能力 |
@@ -50,13 +73,27 @@ Atlas ERP 是一套可直接运行的模块化单体 ERP：业务模块共享同
 | --- | --- |
 | ![登录页](assets/images/login.png) | ![销售订单](assets/images/sales-orders.png) |
 
-| 库存查询 | 审批实例 |
+| 采购订单 | 库存查询 |
 | --- | --- |
-| ![库存查询](assets/images/inventory-stocks.png) | ![审批实例](assets/images/workflow-instances.png) |
+| ![采购订单](assets/images/purchase-orders.png) | ![库存查询](assets/images/inventory-stocks.png) |
+
+| 应收账款 | 商机管理 |
+| --- | --- |
+| ![应收账款](assets/images/finance-receivables.png) | ![商机管理](assets/images/crm-opportunities.png) |
+
+| 销售报表 | 我的待办 |
+| --- | --- |
+| ![销售报表](assets/images/report-sales.png) | ![我的待办](assets/images/workflow-todo.png) |
+
+审批实例：单据、流程节点与审批历史的联动记录。
+
+![审批实例](assets/images/workflow-instances.png)
 
 流程定义维护：查询区、流程表格与分页，侧边栏按角色高亮当前菜单。
 
 ![审批流程定义](assets/images/workflow.png)
+
+以上截图均基于内置演示数据，由 Playwright 在实际运行的应用中采集。
 
 ## 系统架构
 
